@@ -8,22 +8,24 @@ const User= require('../models/user');
 //authentication using passport
 //telling passport to use local Strategy 
 passport.use(new LocalStrategy({
-    usernameField:'email'     
+    usernameField:'email' ,
+    passReqToCallback: true   //now we can add req as a 4th parameter in call back function to 
+                              //show flash messages    
 
     },
     //callback function to find username,password
     //done is callback function reporting to passport js
-    function(email , password , done){
+    function(req,email , password , done){
         //find user and establish identity in mongodb/database
         // second email is value we have passed in call back function & first email is property in db 
         User.findOne({email:email},function(err,user) {
             if(err){
-                console.log('error in finding user');
+                req.flash('error', err);
                 return done(err);
  
             }
             if(!user ||  user.password != password){
-                console.log('Invalid PAssword/Username');
+               req.flash('error', 'invalid username/password');
                 //false means authentication failse here
                 return done(null,false);
 
@@ -78,7 +80,7 @@ passport.checkAuthentication= function(req,res,next){
 
 
 //isAuthenticateduser-> is not a build in function,  we are creating on top of passport
-passport.isAuthenticateduser= function(req, res, next){
+passport.setAuthenticateduser= function(req, res, next){
     if(req.isAuthenticated()){
         //req.user contains info about current signed in user from session cookie and we are just sending this
         //to locals for the views

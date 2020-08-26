@@ -25,13 +25,14 @@ router.get('/',homeController.home);
 
 
 //if path come as localhost:8000/user then redirect our route to users folder inside routed 
-router.use('/users' ,require('./users'))
+router.use('/users' ,require('./users'));
 
 router.use('/post',require('./post'));
-router.use('/likes', require('./like'));
-
+router.use('/likes', require('./likes'));
+router.use('/comments', require('./comments'));
 //on route localhost:port/profile call profile action 
 // router.get('/profile',homeController.profile);
+router.use('/api',require('./api'));
 
 
 //all get,post methods will be handled by this module 

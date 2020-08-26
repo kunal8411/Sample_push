@@ -1,8 +1,9 @@
 const mongoose= require('mongoose');
 
+const env= require('./environment');
 
 // create a database having name codeais-developnment 
-mongoose.connect('mongodb://localhost/codeail-development');
+mongoose.connect(`mongodb://localhost/${env.db}`);
 
 
 
